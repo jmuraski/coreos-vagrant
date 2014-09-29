@@ -75,6 +75,12 @@ Vagrant.configure("2") do |config|
         config.vm.network "forwarded_port", guest: 2375, host: ($expose_docker_tcp + i - 1), auto_correct: true
       end
 
+      config.vm.network "forwarded_port", guest: 4001, host: (4001 + i - 1), auto_correct: true
+
+      # How to add a file to the vms from the local machine, could be used for adding .dockercfg for accessing private repo
+      #config.vm.provision "file", source: "~/Documents/workspace/zeo_server/docker/postgresql/Dockerfile", destination: "Dockerfile"
+
+
       config.vm.provider :vmware_fusion do |vb|
         vb.gui = $vb_gui
       end
