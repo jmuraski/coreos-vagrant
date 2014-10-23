@@ -1,0 +1,9 @@
+[Unit]
+Description=jenkins
+
+[Service]
+ExecStart=/usr/bin/docker docker run --rm -p 8080:8080 -v /var/jenkins_home --name jenkins-%i jenkins:latest
+ExecStop=/usr/bin/docker kill jenkins-%i
+
+[X-Fleet]
+X-Conflicts=jenkins@%i.service
