@@ -3,8 +3,13 @@ This needs to happen everytime you create the cluster from scratch, you need a n
 ```
 curl -w "\n" https://discovery.etcd.io/new
 ```
+Once you take the token and add it to the user-data file you can execute
+```
+vagrant up
+```
+This will pull the images needed and will provision the servers
 
-execute lines to add right ssh keys for vagrant
+After Vagrant is up, execute lines to add right ssh keys for vagrant
 ```
 vagrant ssh-config --host coreos-vagrant >> ~/.ssh/config
 vagrant ssh-config --host coreos-vagrant | sed -n "s/IdentityFile//gp" | xargs ssh-add
@@ -14,6 +19,9 @@ The first command adds an entry to your ~/.ssh/config so you can ssh in using ss
 The second command adds the default insecure_private_key to your ssh-agent on your Mac
 
 [Fleet Using Client](https://coreos.com/docs/launching-containers/launching/fleet-using-the-client/)
+
+The following commands are needed to make it so you can use Fleetctl into the
+servers
 ```
 export FLEETCTL_TUNNEL="$(vagrant ssh-config core-01 | sed -n "s/[ ]*HostName[ ]*//gp"):$(vagrant ssh-config core-01 | sed -n "s/[ ]*Port[ ]*//gp")"
 echo $FLEETCTL_TUNNEL
@@ -62,6 +70,8 @@ coreos:
           }
         }
     - path: /etc/fleet/fleet.conf
+      owner: core:core
+      permissions: 0644
       content: |
         public_ip="$private_ipv4"
         metadata="elastic_ip=true,public_ip=$public_ipv4"

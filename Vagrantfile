@@ -82,6 +82,7 @@ Vagrant.configure("2") do |config|
       end
       # How to add a file to the vms from the local machine, could be used for adding .dockercfg for accessing private repo
       #config.vm.provision "file", source: "~/Documents/workspace/zeo_server/docker/postgresql/Dockerfile", destination: "Dockerfile"
+      config.vm.provision "file", source: "~/.dockercfg", destination: ".dockercfg"
 
 
       config.vm.provider :vmware_fusion do |vb|
